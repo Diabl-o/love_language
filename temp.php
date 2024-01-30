@@ -1,40 +1,103 @@
 
+<script>
+
+function setActive(clickedButton) {
+    // Remove the 'active' class from all buttons in the group
+    var buttons = document.querySelectorAll('.group-button');
+    buttons.forEach(function(button) {
+      button.classList.remove('active');
+    });
+
+    // Add the 'active' class to the clicked button
+    clickedButton.classList.add('active');
+  }
+
+</script>
+
+
+<div class="question_button" id="question1">
+    <button class="qb" onclick="setActive(this, 'question1')">1</button>
+    <button class="qb" onclick="setActive(this, 'question1')">2</button>
+    <!-- ... other buttons ... -->
+</div>
+
+<div class="question_button" id="question2">
+    <button class="qb" onclick="setActive(this, 'question2')">1</button>
+    <button class="qb" onclick="setActive(this, 'question2')">2</button>
+    <!-- ... other buttons ... -->
+</div>
+
+<script>
+    function setActive(clickedButton, group) {
+        var buttons = document.querySelectorAll(`#${group} button`);
+        buttons.forEach(function (button) {
+            button.classList.remove('active');
+        });
+
+        clickedButton.classList.add('active');
+    }
+
+    function nextButton() {
+        document.getElementsByClassName("question_container").style.display = "none";
+        document.getElementsByClassName("question_container1").style.display = "block";
+    }
+</script>
+
+
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .active {
+      background-color: #4CAF50; /* Set the active background color */
+      color: white; /* Set the active text color */
+    }
+  </style>
+  <title>Active Button Group</title>
+</head>
+<body>
+
+<button class="group-button" onclick="setActive(this)">Button 1</button>
+<button class="group-button" onclick="setActive(this)">Button 2</button>
+<button class="group-button" onclick="setActive(this)">Button 3</button>
+
+<script>
+  function setActive(clickedButton) {
+    // Remove the 'active' class from all buttons in the group
+    var buttons = document.querySelectorAll('.group-button');
+    buttons.forEach(function(button) {
+      button.classList.remove('active');
+    });
+
+    // Add the 'active' class to the clicked button
+    clickedButton.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
 <?php
+    $err1=$err2=$err3=$err4=$err5="";
 
-session_start();
-    
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-
-    if(isset($_POST["data_submit"])){
-            
-            
-            
-            $data=$_POST["q1"]+$_POST["q2"]+$_POST["q3"]+$_POST["q4"]+$_POST["q5"]+
-            $_POST["q6"]+$_POST["q7"]+$_POST["q8"]+$_POST["q9"]+$_POST["q10"]+
-            $_POST["q11"]+$_POST["q12"]+$_POST["q13"]+$_POST["q14"]+$_POST["q15"]+
-            $_POST["q16"]+$_POST["q17"]+$_POST["q18"]+$_POST["q19"]+$_POST["q20"]+
-            $_POST["q21"]+$_POST["q22"]+$_POST["q23"]+$_POST["q24"]+$_POST["q25"];
-
-
-            
-
-           $_SESSION["data"]=$data;
-
-           header("location:result.php");
-
+    if($_SERVER["REQUEST_METHOD"]=="POST"){
+        if(!isset($_POST["q1"]) || !isset($_POST["q2"]) || !isset($_POST["q3"]) || !isset($_POST["q4"]) || !isset($_POST["q5"])){
+            $ree1="Please select all answer from all questions";
         }
 
 
 
-
-    
-
-}
-   
+    }
 
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -58,102 +121,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             
             clickedButton.classList.add('active');
-
         }
-
-
-        function setActiveAndSubmit(button,containerId,hiddenInputId){
-            setActive(button, containerId);
-
-            document.getElementById(hiddenInputId).value = button.value;
-        }
-
-       
-
-
-
-        function nextButton(now,next,a,b,c){
-            let counter=0;
-
-
+        function nextButton(now,next){
             
-
-      
-            for (let i = a; i <= b; i++) {
-                
-                var buttonContainer = document.getElementById('question' + i);
-                var buttons = buttonContainer.getElementsByTagName('BUTTON');
-                
-
-                for (let j = 0; j < buttons.length; j++) {
-                    if (buttons[j].classList.contains('active')) {
-                        counter++;
-                        break;
-                    }
-                }
-
-                
-            }
-
-            
-
-            if (counter!==b-a+1) {
-                document.querySelector('.err'+a).style.display = "block";
-            }
-            else{
-            
-                document.querySelector('.err'+a).style.display = "none";
-
-                window.scrollTo(0,0);
-                
-                document.querySelector('.load').style.width = `${c}%`;
             document.querySelector(`.${now}`).style.display="none";
             document.querySelector(`.${next}`).style.display="block";
-            }
         }
 
         function previous_button(now,previous){
-
-            
             
             document.querySelector(`.${now}`).style.display="none";
             document.querySelector(`.${previous}`).style.display="block";
         }
-
-        function submitButton(a,b){
-
-            let counter=0;
-
-      
-            for (let i = a; i <= b; i++) {
-                
-                var buttonContainer = document.getElementById('question' + i);
-                var buttons = buttonContainer.getElementsByTagName('BUTTON');
-                
-
-                for (let j = 0; j < buttons.length; j++) {
-                    if (buttons[j].classList.contains('active')) {
-                        counter++;
-                        break;
-                    }
-                }
-
-                
-            }
-
-            
-
-            if (counter!==b-a+1) {
-                document.querySelector('.err'+a).style.display = "block";
-                event.preventDefault();
-            }
-            else{
-                document.getElementById('question_form').submit();
-            }
-
-
-        }
-
     </script>
 </head>
 <body>
@@ -193,22 +172,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div class="wrapper">
     <div class="sidebar">
         <ul>
-            <li><a href="home.php">
+            <li><a href="index.php">
                 <span class="item">Home</span>
             </a></li>
-            <li><a href="home.php">
+            <li><a href="index.php">
                 <span class="item">Love Language Test</span>
             </a></li>
             <li><a href="about.php">
                 <span class="item">About Love Language Test</span>
             </a></li>
-            <li><a href="compatibilitytest.php">
+            <li><a href="">
                 <span class="item">Love Language Compatibility</span>
             </a></li>
-            <li><a href="about.php">
+            <li><a href="">
                 <span class="item">About Love Language</span>
             </a></li>
-            <li><a href="compatibilitytest.php">
+            <li><a href="">
                 <span class="item">Compatibility</span>
             </a></li>
             <li>
@@ -218,40 +197,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <li><a href="love-language.php">
                 <span class="item">5 Love Languages</span>
             </a></li>
-            <li><a href="act-of-service.html">
+            <li><a href="">
                 <span class="item">Act of Service</span>
             </a></li>
             <li><a href="physical-touch.html">
                 <span class="item">Physical Touch</span>
             </a></li>
-            <li><a href="#">
+            <li><a href="">
                 <span class="item">Blog</span>
             </a></li>
-            <li><a href="receiving-gifts.html">
+            <li><a href="">
                 <span class="item">Receiving Gifts</span>
             </a></li>
-            <li><a href="words-of-affirmation.html">
+            <li><a href="">
                 <span class="item">Words Of Affirmation</span>
             </a></li>
             <li><a href="quality-time.html">
                 <span class="item">Quality Time</span>
             </a></li>
-            <li><a href="understanding-mis.html">
+            <li><a href="">
                 <span class="item">Understanding </span>
             </a></li>
-            <li><a href="understanding-mis.html">
+            <li><a href="">
                 <span class="item">Miscommunication</span>
             </a></li>
-            <li><a href="why-to.html">
+            <li><a href="">
                 <span class="item">Importance of Understanding </span>
             </a></li>
-            <li><a href="love-language.php">
+            <li><a href="">
                 <span class="item">Love Languages </span>
             </a></li>
             <li>
             <hr class="my-8 border-t border-blue-300">
         </li>
-        <li><a href="privacy-policy.html">
+        <li><a href="">
                 <span class="item">Privacy policy</span>
             </a></li>
 
@@ -272,43 +251,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     </div>
                 </div>
-                <form id="question_form" onsubmit="submitButton(21,25, event)" action="home.php" method="post">
+                <form action="home.php" method="post">
                 <div class="question_container">
-                    <input type="hidden" name="q1" id="hidden_q1" value="" >
-                    <input type="hidden" name="q2" id="hidden_q2" value="" >
-                    <input type="hidden" name="q3" id="hidden_q3" value="" >
-                    <input type="hidden" name="q4" id="hidden_q4" value="" >
-                    <input type="hidden" name="q5" id="hidden_q5" value="" >
-                    <input type="hidden" name="q6" id="hidden_q6" value="" >
-                    <input type="hidden" name="q7" id="hidden_q7" value="" >
-                    <input type="hidden" name="q8" id="hidden_q8" value="" >
-                    <input type="hidden" name="q9" id="hidden_q9" value="" >
-                    <input type="hidden" name="q10" id="hidden_q10" value="" >
-                    <input type="hidden" name="q11" id="hidden_q11" value="" >
-                    <input type="hidden" name="q12" id="hidden_q12" value="" >
-                    <input type="hidden" name="q13" id="hidden_q13" value="" >
-                    <input type="hidden" name="q14" id="hidden_q14" value="" >
-                    <input type="hidden" name="q15" id="hidden_q15" value="" >
-                    <input type="hidden" name="q16" id="hidden_q16" value="" >
-                    <input type="hidden" name="q17" id="hidden_q17" value="" >
-                    <input type="hidden" name="q18" id="hidden_q18" value="" >
-                    <input type="hidden" name="q19" id="hidden_q19" value="" >
-                    <input type="hidden" name="q20" id="hidden_q20" value="" >
-                    <input type="hidden" name="q21" id="hidden_q21" value="" >
-                    <input type="hidden" name="q22" id="hidden_q22" value="" >
-                    <input type="hidden" name="q23" id="hidden_q23" value="" >
-                    <input type="hidden" name="q24" id="hidden_q24" value="" >
-                    <input type="hidden" name="q25" id="hidden_q25" value="" >
+                    
                     <div class="question mb">
                         <div class="question_text b mbo">
                         I feel connected to my partner through a hug or a kiss.
                         </div>
                         <div class="question_button" id="question1">
-                        <button type="button" class="qb"  value="1" onclick="setActiveAndSubmit(this,'question1','hidden_q1')">1</button>
-                        <button type="button" class="qb"  value="2" onclick="setActiveAndSubmit(this,'question1','hidden_q1')">2</button>
-                        <button type="button" class="qb"  value="3" onclick="setActiveAndSubmit(this,'question1','hidden_q1')">3</button>
-                        <button type="button" class="qb"  value="4" onclick="setActiveAndSubmit(this,'question1','hidden_q1')">4</button>
-                        <button type="button" class="qb"  value="5" onclick="setActiveAndSubmit(this,'question1','hidden_q1')">5</button>
+                        <button class="qb" name="q1" value="1" onclick="setActive(this,'question1')">1</button>
+                        <button class="qb" name="q1" value="2" onclick="setActive(this,'question1')">2</button>
+                        <button class="qb" name="q1" value="3" onclick="setActive(this,'question1')">3</button>
+                        <button class="qb" name="q1" value="4" onclick="setActive(this,'question1')">4</button>
+                        <button class="qb" name="q1" value="5" onclick="setActive(this,'question1')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -320,11 +275,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Small gestures, such as running errands or making a meal, are meaningful to me.
                         </div>
                         <div class="question_button" id="question2">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question2','hidden_q2')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question2','hidden_q2')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question2','hidden_q2')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question2','hidden_q2')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question2','hidden_q2')">5</button>
+                        <button class="qb" name="q2" value="1" onclick="setActive(this,'question2')">1</button>
+                        <button class="qb" name="q2" value="2"onclick="setActive(this,'question2')">2</button>
+                        <button class="qb" name="q2" value="3"onclick="setActive(this,'question2')">3</button>
+                        <button class="qb" name="q2" value="4"onclick="setActive(this,'question2')">4</button>
+                        <button class="qb" name="q2" value="5"onclick="setActive(this,'question2')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -336,11 +291,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I feel loved when my partner compliments my appearance or skills.
                         </div>
                         <div class="question_button" id="question3">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question3','hidden_q3')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question3','hidden_q3')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question3','hidden_q3')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question3','hidden_q3')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question3','hidden_q3')">5</button>
+                        <button class="qb" name="q3" value="1" onclick="setActive(this,'question3')">1</button>
+                        <button class="qb" name="q3" value="2" onclick="setActive(this,'question3')">2</button>
+                        <button class="qb" name="q3" value="3" onclick="setActive(this,'question3')">3</button>
+                        <button class="qb" name="q3" value="4" onclick="setActive(this,'question3')">4</button>
+                        <button class="qb" name="q3" value="5" onclick="setActive(this,'question3')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -352,11 +307,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I like it when my partner doesn’t use their phone when we are together.
                         </div>
                         <div class="question_button" id="question4">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question4','hidden_q4')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question4','hidden_q4')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question4','hidden_q4')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question4','hidden_q4')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question4','hidden_q4')">5</button>
+                        <button class="qb" name="q4" value="1" onclick="setActive(this,'question4')">1</button>
+                        <button class="qb" name="q4" value="2" onclick="setActive(this,'question4')">2</button>
+                        <button class="qb" name="q4" value="3" onclick="setActive(this,'question4')">3</button>
+                        <button class="qb" name="q4" value="4" onclick="setActive(this,'question4')">4</button>
+                        <button class="qb" name="q4" value="5" onclick="setActive(this,'question4')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -368,11 +323,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I feel very happy when my partner travels without me and brings me a little gift after they come back.
                         </div>
                         <div class="question_button" id="question5">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question5','hidden_q5')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question5','hidden_q5')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question5','hidden_q5')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question5','hidden_q5')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question5','hidden_q5')">5</button>
+                        <button class="qb" name="q5" value="1" onclick="setActive(this,'question5')">1</button>
+                        <button class="qb" name="q5" value="2" onclick="setActive(this,'question5')">2</button>
+                        <button class="qb" name="q5" value="3" onclick="setActive(this,'question5')">3</button>
+                        <button class="qb" name="q5" value="4" onclick="setActive(this,'question5')">4</button>
+                        <button class="qb" name="q5" value="5" onclick="setActive(this,'question5')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -383,10 +338,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="next_container">
                         <div></div>
                         <div>
-                            <button type="button" class="next_button" onclick="nextButton('question_container','question_container1',1,5,40)">Next</button>
+                            <button type="submit" class="next_button" onclick="nextButton('question_container','question_container1')">Next</button>
                         </div>
                     </div>
-                    <span class="err1">Please select an answer for all question.</span>
+                    <span><?php echo $err1; ?></span>
 
                 </div>
 
@@ -398,11 +353,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I can easily express my feelings and emotions verbally when I am happy or upset with my partner.
                         </div>
                         <div class="question_button" id="question6">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question6','hidden_q6')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question6','hidden_q6')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question6','hidden_q6')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question6','hidden_q6')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question6','hidden_q6')">5</button>
+                        <button class="qb" name="q6" value="1" onclick="setActive(this,'question6')">1</button>
+                        <button class="qb" name="q6" value="2" onclick="setActive(this,'question6')">2</button>
+                        <button class="qb" name="q6" value="3" onclick="setActive(this,'question6')">3</button>
+                        <button class="qb" name="q6" value="4" onclick="setActive(this,'question6')">4</button>
+                        <button class="qb" name="q6" value="5" onclick="setActive(this,'question6')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -414,11 +369,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         It means a lot when my partner holds my hand or puts their arm around me in public.
                         </div>
                         <div class="question_button" id="question7">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question7','hidden_q7')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question7','hidden_q7')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question7','hidden_q7')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question7','hidden_q7')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question7','hidden_q7')">5</button>
+                        <button class="qb" name="q7" value="1" onclick="setActive(this,'question7')">1</button>
+                        <button class="qb" name="q7" value="2" onclick="setActive(this,'question7')">2</button>
+                        <button class="qb" name="q7" value="3" onclick="setActive(this,'question7')">3</button>
+                        <button class="qb" name="q7" value="4" onclick="setActive(this,'question7')">4</button>
+                        <button class="qb" name="q7" value="5" onclick="setActive(this,'question7')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -430,11 +385,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Doing practical things together (e.g., household chores, DIY projects) makes me feel loved.
                         </div>
                         <div class="question_button" id="question8">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question8','hidden_q8')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question8','hidden_q8')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question8','hidden_q8')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question8','hidden_q8')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question8','hidden_q8')">5</button>
+                        <button class="qb" name="q8" value="1" onclick="setActive(this,'question8')">1</button>
+                        <button class="qb" name="q8" value="2" onclick="setActive(this,'question8')">2</button>
+                        <button class="qb" name="q8" value="3" onclick="setActive(this,'question8')">3</button>
+                        <button class="qb" name="q8" value="4" onclick="setActive(this,'question8')">4</button>
+                        <button class="qb" name="q8" value="5" onclick="setActive(this,'question8')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -446,11 +401,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Receiving thoughtful and personalized gifts makes me feel special.
                         </div>
                         <div class="question_button" id="question9">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question9','hidden_q9')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question9','hidden_q9')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question9','hidden_q9')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question9','hidden_q9')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question9','hidden_q9')">5</button>
+                        <button class="qb" name="q9" value="1" onclick="setActive(this,'question9')">1</button>
+                        <button class="qb" name="q9" value="2" onclick="setActive(this,'question9')">2</button>
+                        <button class="qb" name="q9" value="3" onclick="setActive(this,'question9')">3</button>
+                        <button class="qb" name="q9" value="4" onclick="setActive(this,'question9')">4</button>
+                        <button class="qb" name="q9" value="5" onclick="setActive(this,'question9')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -462,11 +417,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I appreciate when my partner actively listens to me and empathizes with my feelings.
                         </div>
                         <div class="question_button" id="question10">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question10','hidden_q10')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question10','hidden_q10')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question10','hidden_q10')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question10','hidden_q10')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question10','hidden_q10')">5</button>
+                        <button class="qb" name="q10" value="1" onclick="setActive(this,'question10')">1</button>
+                        <button class="qb" name="q10" value="2" onclick="setActive(this,'question10')">2</button>
+                        <button class="qb" name="q10" value="3" onclick="setActive(this,'question10')">3</button>
+                        <button class="qb" name="q10" value="4" onclick="setActive(this,'question10')">4</button>
+                        <button class="qb" name="q10" value="5" onclick="setActive(this,'question10')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -476,13 +431,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <div class="next_container">
                         <div>
-                            <button type="button" class="previous_button" onclick="previous_button('question_container1','question_container')">Previous</button>
+                            <button class="previous_button" onclick="previous_button('question_container1','question_container')">Previous</button>
                         </div>
                         <div>
-                            <button type="button" class="next_button" onclick="nextButton('question_container1','question_container2',6,10,60)">Next</button>
+                            <button class="next_button" onclick="nextButton('question_container1','question_container2')">Next</button>
                         </div>
                     </div>
-                    <span class="err6">Please select an answer for all question.</span>
 
                 </div>
                 <div class="question_container2">
@@ -491,11 +445,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Quality time spent with my partner, even if it's simple, is important to me.
                         </div>
                         <div class="question_button" id="question11">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question11','hidden_q11')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question11','hidden_q11')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question11','hidden_q11')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question11','hidden_q11')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question11','hidden_q11')">5</button>
+                        <button class="qb" name="q11" value="1" onclick="setActive(this,'question11')">1</button>
+                        <button class="qb" name="q11" value="2" onclick="setActive(this,'question11')">2</button>
+                        <button class="qb" name="q11" value="3" onclick="setActive(this,'question11')">3</button>
+                        <button class="qb" name="q11" value="4" onclick="setActive(this,'question11')">4</button>
+                        <button class="qb" name="q11" value="5" onclick="setActive(this,'question11')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -507,11 +461,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I feel loved when my partner shows physical affection, such as hugging, cuddling, or kissing.
                         </div>
                         <div class="question_button" id="question12">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question12','hidden_q12')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question12','hidden_q12')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question12','hidden_q12')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question12','hidden_q12')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question12','hidden_q12')">5</button>
+                        <button class="qb" name="q12" value="1" onclick="setActive(this,'question12')">1</button>
+                        <button class="qb" name="q12" value="2" onclick="setActive(this,'question12')">2</button>
+                        <button class="qb" name="q12" value="3" onclick="setActive(this,'question12')">3</button>
+                        <button class="qb" name="q12" value="4" onclick="setActive(this,'question12')">4</button>
+                        <button class="qb" name="q12" value="5" onclick="setActive(this,'question12')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -523,11 +477,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Acts of service that help me with my daily responsibilities make me feel cared for.
                         </div>
                         <div class="question_button" id="question13">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question13','hidden_q13')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question13','hidden_q13')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question13','hidden_q13')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question13','hidden_q13')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question13','hidden_q13')">5</button>
+                        <button class="qb" name="q13" value="1" onclick="setActive(this,'question13')">1</button>
+                        <button class="qb" name="q13" value="2" onclick="setActive(this,'question13')">2</button>
+                        <button class="qb" name="q13" value="3" onclick="setActive(this,'question13')">3</button>
+                        <button class="qb" name="q13" value="4" onclick="setActive(this,'question13')">4</button>
+                        <button class="qb" name="q13" value="5" onclick="setActive(this,'question13')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -539,11 +493,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I value when my partner gives me compliments or praises my achievements.
                         </div>
                         <div class="question_button" id="question14">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question14','hidden_q14')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question14','hidden_q14')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question14','hidden_q14')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question14','hidden_q14')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question14','hidden_q14')">5</button>
+                        <button class="qb" name="q14" value="1" onclick="setActive(this,'question14')">1</button>
+                        <button class="qb" name="q14" value="2" onclick="setActive(this,'question14')">2</button>
+                        <button class="qb" name="q14" value="3" onclick="setActive(this,'question14')">3</button>
+                        <button class="qb" name="q14" value="4" onclick="setActive(this,'question14')">4</button>
+                        <button class="qb" name="q14" value="5" onclick="setActive(this,'question14')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -555,11 +509,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Receiving unexpected gifts or tokens of affection brightens my day.
                         </div>
                         <div class="question_button" id="question15">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question15','hidden_q15')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question15','hidden_q15')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question15','hidden_q15')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question15','hidden_q15')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question15','hidden_q15')">5</button>
+                        <button class="qb" name="q15" value="1" onclick="setActive(this,'question15')">1</button>
+                        <button class="qb" name="q15" value="2" onclick="setActive(this,'question15')">2</button>
+                        <button class="qb" name="q15" value="3" onclick="setActive(this,'question15')">3</button>
+                        <button class="qb" name="q15" value="4" onclick="setActive(this,'question15')">4</button>
+                        <button class="qb" name="q15" value="5" onclick="setActive(this,'question15')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -569,13 +523,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <div class="next_container">
                         <div>
-                            <button type="button" class="previous_button" onclick="previous_button('question_container2','question_container1')">Previous</button>
+                            <button class="previous_button" onclick="previous_button('question_container2','question_container1')">Previous</button>
                         </div>
                         <div>
-                            <button type="button" class="next_button" onclick="nextButton('question_container2','question_container3',11,15,80)">Next</button>
+                            <button class="next_button" onclick="nextButton('question_container2','question_container3')">Next</button>
                         </div>
                     </div>
-                    <span class="err11">Please select an answer for all question.</span>
 
                 </div>
 
@@ -585,11 +538,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Sharing experiences and creating memories together is meaningful to me.
                         </div>
                         <div class="question_button" id="question16">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question16','hidden_q16')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question16','hidden_q16')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question16','hidden_q16')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question16','hidden_q16')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question16','hidden_q16')">5</button>
+                        <button class="qb" name="q16" value="1" onclick="setActive(this,'question16')">1</button>
+                        <button class="qb" name="q16" value="2" onclick="setActive(this,'question16')">2</button>
+                        <button class="qb" name="q16" value="3" onclick="setActive(this,'question16')">3</button>
+                        <button class="qb" name="q16" value="4" onclick="setActive(this,'question16')">4</button>
+                        <button class="qb" name="q16" value="5" onclick="setActive(this,'question16')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -601,11 +554,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Physical touch, like holding hands or back rubs, makes me feel loved and connected.
                         </div>
                         <div class="question_button" id="question17">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question17','hidden_q17')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question17','hidden_q17')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question17','hidden_q17')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question17','hidden_q17')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question17','hidden_q17')">5</button>
+                        <button class="qb" name="q17" value="1" onclick="setActive(this,'question17')">1</button>
+                        <button class="qb" name="q17" value="2" onclick="setActive(this,'question17')">2</button>
+                        <button class="qb" name="q17" value="3" onclick="setActive(this,'question17')">3</button>
+                        <button class="qb" name="q17" value="4" onclick="setActive(this,'question17')">4</button>
+                        <button class="qb" name="q17" value="5" onclick="setActive(this,'question17')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -617,11 +570,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Acts of service that make my life easier or more convenient show me love.
                         </div>
                         <div class="question_button" id="question18">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question18','hidden_q18')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question18','hidden_q18')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question18','hidden_q18')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question18','hidden_q18')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question18','hidden_q18')">5</button>
+                        <button class="qb" name="q18" value="1" onclick="setActive(this,'question18')">1</button>
+                        <button class="qb" name="q18" value="2" onclick="setActive(this,'question18')">2</button>
+                        <button class="qb" name="q18" value="3" onclick="setActive(this,'question18')">3</button>
+                        <button class="qb" name="q18" value="4" onclick="setActive(this,'question18')">4</button>
+                        <button class="qb" name="q18" value="5" onclick="setActive(this,'question18')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -633,11 +586,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Verbal affirmations and compliments from my partner make me feel loved and appreciated.
                         </div>
                         <div class="question_button" id="question19">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question19','hidden_q19')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question19','hidden_q19')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question19','hidden_q19')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question19','hidden_q19')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question19','hidden_q19')">5</button>
+                        <button class="qb" name="q19" value="1" onclick="setActive(this,'question19')">1</button>
+                        <button class="qb" name="q19" value="2" onclick="setActive(this,'question19')">2</button>
+                        <button class="qb" name="q19" value="3" onclick="setActive(this,'question19')">3</button>
+                        <button class="qb" name="q19" value="4" onclick="setActive(this,'question19')">4</button>
+                        <button class="qb" name="q19" value="5" onclick="setActive(this,'question19')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -649,11 +602,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I feel loved when my partner surprises me with thoughtful gestures or presents.
                         </div>
                         <div class="question_button" id="question20">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question20','hidden_q20')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question20','hidden_q20')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question20','hidden_q20')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question20','hidden_q20')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question20','hidden_q20')">5</button>
+                        <button class="qb" name="q20" value="1" onclick="setActive(this,'question20')">1</button>
+                        <button class="qb" name="q20" value="2" onclick="setActive(this,'question20')">2</button>
+                        <button class="qb" name="q20" value="3" onclick="setActive(this,'question20')">3</button>
+                        <button class="qb" name="q20" value="4" onclick="setActive(this,'question20')">4</button>
+                        <button class="qb" name="q20" value="5" onclick="setActive(this,'question20')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -663,13 +616,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <div class="next_container">
                         <div>
-                            <button type="button" class="previous_button" onclick="previous_button('question_container3','question_container2')">Previous</button>
+                            <button class="previous_button" onclick="previous_button('question_container3','question_container2')">Previous</button>
                         </div>
                         <div>
-                            <button type="button" class="next_button" onclick="nextButton('question_container3','question_container4',16,20,100)">Next</button>
+                            <button class="next_button" onclick="nextButton('question_container3','question_container4')">Next</button>
                         </div>
                     </div>
-                    <span class="err16">Please select an answer for all question.</span>
 
                 </div>
 
@@ -679,11 +631,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Physical touch, such as holding hands or gentle touches, makes me feel connected.
                         </div>
                         <div class="question_button" id="question21">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question21','hidden_q21')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question21','hidden_q21')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question21','hidden_q21')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question21','hidden_q21')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question21','hidden_q21')">5</button>
+                        <button class="qb" name="q21" value="1" onclick="setActive(this,'question21')">1</button>
+                        <button class="qb" name="q21" value="2" onclick="setActive(this,'question21')">2</button>
+                        <button class="qb" name="q21" value="3" onclick="setActive(this,'question21')">3</button>
+                        <button class="qb" name="q21" value="4" onclick="setActive(this,'question21')">4</button>
+                        <button class="qb" name="q21" value="5" onclick="setActive(this,'question21')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -695,11 +647,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Acts of service that help me with tasks or responsibilities make me feel loved.
                         </div>
                         <div class="question_button" id="question22">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question22','hidden_q22')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question22','hidden_q22')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question22','hidden_q22')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question22','hidden_q22')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question22','hidden_q22')">5</button>
+                        <button class="qb" name="q22" value="1" onclick="setActive(this,'question22')">1</button>
+                        <button class="qb" name="q22" value="2" onclick="setActive(this,'question22')">2</button>
+                        <button class="qb" name="q22" value="3" onclick="setActive(this,'question22')">3</button>
+                        <button class="qb" name="q22" value="4" onclick="setActive(this,'question22')">4</button>
+                        <button class="qb" name="q22" value="5" onclick="setActive(this,'question22')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -711,11 +663,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I appreciate receiving love notes, letters, or text messages expressing affection.
                         </div>
                         <div class="question_button" id="question23">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question23','hidden_q23')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question23','hidden_q23')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question23','hidden_q23')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question23','hidden_q23')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question23','hidden_q23')">5</button>
+                        <button class="qb" name="q23" value="1" onclick="setActive(this,'question23')">1</button>
+                        <button class="qb" name="q23" value="2" onclick="setActive(this,'question23')">2</button>
+                        <button class="qb" name="q23" value="3" onclick="setActive(this,'question23')">3</button>
+                        <button class="qb" name="q23" value="4" onclick="setActive(this,'question23')">4</button>
+                        <button class="qb" name="q23" value="5" onclick="setActive(this,'question23')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -727,11 +679,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         Spending uninterrupted and focused time with my partner makes me feel valued.
                         </div>
                         <div class="question_button" id="question24">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question24','hidden_q24')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question24','hidden_q24')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question24','hidden_q24')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question24','hidden_q24')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question24','hidden_q24')">5</button>
+                        <button class="qb" name="q24" value="1" onclick="setActive(this,'question24')">1</button>
+                        <button class="qb" name="q24" value="2" onclick="setActive(this,'question24')">2</button>
+                        <button class="qb" name="q24" value="3" onclick="setActive(this,'question24')">3</button>
+                        <button class="qb" name="q24" value="4" onclick="setActive(this,'question24')">4</button>
+                        <button class="qb" name="q24" value="5" onclick="setActive(this,'question24')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -743,11 +695,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         I feel loved when my partner gives me meaningful and thoughtful gifts.
                         </div>
                         <div class="question_button" id="question25">
-                        <button type="button" class="qb" value="1" onclick="setActiveAndSubmit(this,'question25','hidden_q25')">1</button>
-                        <button type="button" class="qb" value="2" onclick="setActiveAndSubmit(this,'question25','hidden_q25')">2</button>
-                        <button type="button" class="qb" value="3" onclick="setActiveAndSubmit(this,'question25','hidden_q25')">3</button>
-                        <button type="button" class="qb" value="4" onclick="setActiveAndSubmit(this,'question25','hidden_q25')">4</button>
-                        <button type="button" class="qb" value="5" onclick="setActiveAndSubmit(this,'question25','hidden_q25')">5</button>
+                        <button class="qb" name="q25" value="1" onclick="setActive(this,'question25')">1</button>
+                        <button class="qb" name="q25" value="2" onclick="setActive(this,'question25')">2</button>
+                        <button class="qb" name="q25" value="3" onclick="setActive(this,'question25')">3</button>
+                        <button class="qb" name="q25" value="4" onclick="setActive(this,'question25')">4</button>
+                        <button class="qb" name="q25" value="5" onclick="setActive(this,'question25')">5</button>
                         </div>
                         <div class="question_response a mbo fn">
                             <div>STRONGLY DISAGREE</div>
@@ -757,17 +709,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <div class="next_container">
                         <div>
-                            <button type="button" class="previous_button" onclick="previous_button('question_container4','question_container3')">Previous</button>
+                            <button class="previous_button" onclick="previous_button('question_container4','question_container3')">Previous</button>
                         </div>
                         <div>
-                            <button type="submit" name="data_submit" class="next_button" >Submit</button>
+                            <button type="submit" class="next_button" onclick="">Submit</button>
                         </div>
                     </div>
-                    <span class="err21">Please select an answer for all question.</span>
-
+    </form>
 
                 </div>
-            </form>
                 
             </div>
         </div>
@@ -860,3 +810,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </html>
 
 
+
+<script>
+    // Get all buttons with the specified name
+    var buttons = document.getElementsByName('myButton');
+
+    // Attach a click event handler to each button
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        alert('Button ' + button.innerText + ' clicked!');
+      });
+    });
